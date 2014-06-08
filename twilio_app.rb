@@ -33,25 +33,26 @@ class TwilioApp < Sinatra::Base
       # authenticate_shipstation
 
       # Shipstation doesn't record time information - just date, so round the parameter down
-      since = Time.parse(@config[:since]).utc.beginning_of_day.iso8601
+      # since = Time.parse(@config[:since]).utc.beginning_of_day.iso8601
 
-      @client.Shipments.filter("ModifyDate ge datetime'#{since}' and ShipDate ne null")
-      panda_result = @client.execute
+      # @client.Shipments.filter("ModifyDate ge datetime'#{since}' and ShipDate ne null")
+      #panda_result = @client.execute
 
       # TODO - get shipping carrier, etc.
-      panda_result.each do |resource|
-        add_object :shipment, {
-          id: resource.ShipmentID.to_s,
-          tracking: resource.TrackingNumber,
-          order_id: resource.OrderID.to_s
-        }
+     # panda_result.each do |resource|
+      #  add_object :shipment, {
+       #   id: resource.ShipmentID.to_s,
+        #  tracking: resource.TrackingNumber,
+         # order_id: resource.OrderID.to_s
+        #}
       end
-      @kount = panda_result.count
+      #@kount = panda_result.count
+	  @kount = 12
 
       # return current timestamp so parameter updates on hub side
       # NOTE: shipstation doesn't provide detail beyond date so we need to round it down in order
       # to not miss any shipments
-      add_parameter 'since', Time.now.utc.beginning_of_day
+      #add_parameter 'since', Time.now.utc.beginning_of_day
     rescue => e
       # tell Honeybadger
       # log_exception(e)
